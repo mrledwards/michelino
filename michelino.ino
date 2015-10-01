@@ -32,15 +32,16 @@
 // Enable one driver in each category
 
 // Motor controller:
-#define ENABLE_ADAFRUIT_MOTOR_DRIVER
+//#define ENABLE_ADAFRUIT_MOTOR_DRIVER
 //#define ENABLE_ARDUINO_MOTOR_DRIVER
+#define ENABLE_L9110_MOTOR_SHEILD
 
 // Distance sensor
 #define ENABLE_NEWPING_DISTANCE_SENSOR_DRIVER
 
 // Remote control:
-//#define ENABLE_BLUESTICK_REMOTE_CONTROL_DRIVER
-#define ENABLE_ROCKETBOT_REMOTE_CONTROL_DRIVER
+#define ENABLE_BLUESTICK_REMOTE_CONTROL_DRIVER
+//#define ENABLE_ROCKETBOT_REMOTE_CONTROL_DRIVER
 
 // constants
 #define TOO_CLOSE 10                    /**< distance to obstacle in centimeters */
@@ -57,6 +58,12 @@ SoftwareSerial BTSerial(BT_RX_PIN, BT_TX_PIN);
 #include "adafruit_motor_driver.h"
 #define LEFT_MOTOR_INIT 1
 #define RIGHT_MOTOR_INIT 3
+#endif
+
+#ifdef ENABLE_L9110_MOTOR_SHEILD
+#include "l9110_motor_driver.h"
+#define LEFT_MOTOR_INIT 5, 9
+#define RIGHT_MOTOR_INIT 6, 10
 #endif
 
 #ifdef ENABLE_ARDUINO_MOTOR_DRIVER
@@ -155,6 +162,9 @@ namespace Michelino
                     else if (turning()) {
                         if (doneTurning(currentTime, distance))
                             move();
+                    }
+                    else {
+                      move();
                     }
                 }
             }
